@@ -43,6 +43,7 @@ def get_api_data():
 
 def get_table_status():
     """ Get the status of each sensor """
+
     # Open the file containing the API response
     with open("response_table.json", "r", encoding="UTF-8") as file:
         data = json.load(file)
@@ -55,8 +56,9 @@ def get_table_status():
     group_status = {}
     for sensor in sensors:
         group = sensor["group"]
+        # Hardcoding to add a value to the group name - hopefully this doesn't backfire...
         if group.startswith("Crystal"):
-            group = "0-" + group
+            group = "0-" + group    
         status = sensor["status"]
 
         if group not in group_status:
@@ -81,7 +83,7 @@ def get_table_status():
     print(f"Sensors Fetched: {len(sensor_list)}")
     print(f"Unusual Sensors: {len([s for s in sensor_list if s.status != 'Up'])}")
 
-    # Sort Sensor_list by group
+    # Sort Sensor_list by int at the beginning of the group name
     sensor_list.sort(key=lambda x: int(x.group.split("-")[0]))
     # get longest group name
     max_group = max(len(sensor.group) for sensor in sensor_list) + 1
